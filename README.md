@@ -1,108 +1,62 @@
-# 🛠️ WordPress Automation Scripts
+---
 
-This repository contains automation scripts for installing and removing WordPress using **Bash** on **Ubuntu Server 22.04** with **Nginx**, **PHP**, and **MariaDB**.  
-The project simplifies the WordPress setup and teardown process by executing a series of automated commands.
+## 📘 README – Script Instalasi WordPress Otomatis
+
+### 🛠️ Deskripsi
+
+Script Bash ini digunakan untuk **menginstal WordPress secara otomatis** di server **Ubuntu atau Debian**, dengan pilihan web server **Apache** atau **Nginx**, lengkap dengan pengaturan database MySQL dan (opsional) HTTPS dengan Let's Encrypt.
 
 ---
 
-## 📥 Installation Steps
+### 📋 Persyaratan
 
-Follow these steps to install WordPress using these scripts:
-
-### 1. Clone the Repository
-
-Clone this repository to your server:
-
-```bash
-git clone https://github.com/RizkiKurniawan17/Wordpress-automation.git
-````
+* Sistem Operasi: **Ubuntu/Debian**
+* Akses sebagai **root** (superuser)
+* Koneksi internet aktif
+* Nama domain aktif (jika ingin menggunakan HTTPS)
 
 ---
 
-### 2. Access the Project Directory
+### 📥 Cara Menggunakan
 
-Navigate into the cloned directory:
+1. **Upload atau salin script ke server**
+   Simpan script dengan nama, misalnya `install-wordpress.sh`.
 
-```bash
-cd Wordpress-automation
-```
+2. **Jadikan script executable**
 
----
+   ```bash
+   chmod +x install-wordpress.sh
+   ```
 
-### 3. Run the Installation Script
+3. **Jalankan script sebagai root**
 
-Execute the script to install WordPress:
+   ```bash
+   sudo ./install-wordpress.sh
+   ```
 
-```bash
-bash install-wordpress.sh
-# or
-chmod +x install-wordpress.sh && ./install-wordpress.sh
-```
+4. **Ikuti petunjuk interaktif**:
 
----
+   * Pilih web server: `apache` atau `nginx`
+   * Pilih apakah ingin menjalankan `mysql_secure_installation`
+   * Masukkan:
 
-### 4. Database & WordPress Configuration
+     * Nama database WordPress
+     * Username database
+     * Password database
+   * Masukkan **domain atau IP publik** server mu
+   * Pilih apakah ingin mengaktifkan HTTPS (Let's Encrypt)
 
-During the script execution, you will be prompted to go through the `mysql_secure_installation`. Recommended answers:
+5. **Akses WordPress**
+   Buka browser dan kunjungi:
 
-* Validate password plugin: `n`
-  *(Recommended to avoid password complexity issues, especially for local use)*
-* Remove anonymous users: `y`
-* Disallow root login remotely: `n` *(only if **not** using in production)*
-* Remove test database: `y`
-* Reload privilege tables: `y`
+   ```
+   http://yourdomain.com / http://ip
+   ```
 
-After this step, the script will also prompt you to input WordPress database configuration:
+   atau:
 
-* **WordPress database name**
-* **Database username**
-* **Database user password**
+   ```
+   https://yourdomain.com (jika HTTPS diaktifkan)
+   ```
 
-These credentials will be used to configure `wp-config.php`.
-
----
-
-### 5. Complete the Installation
-
-Once the script completes, WordPress will be installed and accessible at:
-
-```
-http://<your-server-ip>
-```
-
-Proceed with the WordPress setup through the web browser.
-
----
-
-## 🧹 Uninstallation (Remove WordPress)
-
-To remove the WordPress installation and its related components:
-
-```bash
-bash remove-wordpress.sh
-# or
-chmod +x remove-wordpress.sh && ./remove-wordpress.sh
-```
-
-The removal script will:
-
-* Read database config from `wp-config.php`
-* Remove WordPress files
-* Drop the corresponding database and user
-* Remove Nginx configuration and reload Nginx
-
----
-
-## 📝 Notes
-
-* These scripts require **Bash** and are intended for **Ubuntu Server 22.04**.
-* If you're using **Windows**, it's recommended to run via **WSL** (Windows Subsystem for Linux).
-* **Do not use this setup as-is in production** without securing your environment.
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-
+   Ikuti langkah-langkah setup WordPress di browser.

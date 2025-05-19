@@ -1,45 +1,46 @@
 #!/bin/bash
 
-# ========== KONFIGURASI ========== #
-DB_NAME="wordpress_db"
-DB_USER="wpuser"
-NGINX_SITE="wordpress"
-WEB_ROOT="/var/www/html"
+print_green() { echo -e "\e[32m$1\e[0m"; }
+print_red() { echo -e "\e[31m$1\e[0m"; }
 
-echo "🚨 Mulai proses penghapusan WordPress..."
+# Cek user
+if [[ $EUID -ne 0 ]]; then
+    print_red "Script ini harus dijalankan sebagai root!"
+    exit 1
+fi
 
-# ========== 1. Hapus file WordPress ========== #
-if [ -d "$WEB_ROOT" ]; then
-    echo "🧹 Menghapus direktori $WEB_ROOT..."
-    sudo rm -rf "$WEB_ROOT"
+read -p "Gunakan Apache atau Nginx? (apache/nginx): " web_server
+if [[ "$web_server" != "apache" && "$web_server" != "nginx" ]]; then
+    print_red "Input salah. Masukkan 'apache' atau 'nginx'."
+    exit 1
+fi
+
+read -p "Masukkan nama domain/server yang digunakan: " domain_name
+
+print_green "Menghapus file WordPress..."
+rm -rf /var/www/html/*
+
+print_green "Menghapus konfigurasi web server..."
+if [[ "$web_server" == "apache" ]]; then
+    a2dissite wordpress.conf
+    rm -f /etc/apache2/sites-available/wordpress.conf
+    systemctl reload apache2
 else
-    echo "📁 Direktori $WEB_ROOT tidak ditemukan, lewati..."
+    rm -f /etc/nginx/sites-enabled/wordpress
+    rm -f /etc/nginx/sites-available/wordpress
+    systemctl reload nginx
 fi
 
-# ========== 2. Hapus database dan user MySQL ========== #
-echo "🗃️ Menghapus database dan user MySQL..."
-sudo mysql -u root <<MYSQL_SCRIPT
-DROP DATABASE IF EXISTS $DB_NAME;
-DROP USER IF EXISTS '$DB_USER'@'localhost';
-FLUSH PRIVILEGES;
-MYSQL_SCRIPT
+read -p "Hapus database dan user MySQL juga? (y/n): " del_db
+if [[ "$del_db" =~ ^[Yy]$ ]]; then
+    read -p "Masukkan nama database WordPress: " wp_db
+    read -p "Masukkan nama user database WordPress: " wp_user
 
-# ========== 3. Hapus konfigurasi Nginx ========== #
-NGINX_AVAILABLE="/etc/nginx/sites-available/$NGINX_SITE"
-NGINX_ENABLED="/etc/nginx/sites-enabled/$NGINX_SITE"
-
-if [ -f "$NGINX_ENABLED" ]; then
-    echo "🔌 Menonaktifkan site Nginx..."
-    sudo rm "$NGINX_ENABLED"
+    mysql -e "DROP DATABASE IF EXISTS ${wp_db};"
+    mysql -e "DROP USER IF EXISTS '${wp_user}'@'localhost';"
+    mysql -e "FLUSH PRIVILEGES;"
+    print_green "Database dan user MySQL telah dihapus."
 fi
 
-if [ -f "$NGINX_AVAILABLE" ]; then
-    echo "🗑️ Menghapus konfigurasi site $NGINX_SITE..."
-    sudo rm "$NGINX_AVAILABLE"
-fi
-
-# ========== 4. Restart Nginx ========== #
-echo "🔁 Me-restart Nginx..."
-sudo nginx -t && sudo systemctl reload nginx
-
-echo "✅ WordPress berhasil dihapus!"
+print_green "Uninstall selesai. WordPress dan konfigurasi terkait telah dihapus."
+```
