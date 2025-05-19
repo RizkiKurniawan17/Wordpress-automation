@@ -1,6 +1,6 @@
 ---
 
-## 📘 README – Script Instalasi WordPress Otomatis
+## 📘 Script Install WordPress 
 
 ### 🛠️ Deskripsi
 
@@ -21,7 +21,7 @@ Script Bash ini digunakan untuk **menginstal WordPress secara otomatis** di serv
 
 1. **Upload atau salin script ke server**
    ```bash
-   git clone
+   git clone https://github.com/RizkiKurniawan17/Wordpress-automation.git
    cd Wordpress-automation
    ```
 
