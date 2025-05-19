@@ -105,5 +105,4 @@ The removal script will:
 
 This project is licensed under the MIT License.
 
-```
 
