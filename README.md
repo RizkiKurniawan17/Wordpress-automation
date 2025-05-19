@@ -20,7 +20,10 @@ Script Bash ini digunakan untuk **menginstal WordPress secara otomatis** di serv
 ### 📥 Cara Menggunakan
 
 1. **Upload atau salin script ke server**
-   Simpan script dengan nama, misalnya `install-wordpress.sh`.
+   ```bash
+   git clone
+   cd Wordpress-automation
+   ```
 
 2. **Jadikan script executable**
 
