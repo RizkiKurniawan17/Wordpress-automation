@@ -34,9 +34,9 @@ cd Wordpress-automation
 Execute the script to install WordPress:
 
 ```bash
-bash install_wordpress.sh
+bash install-wordpress.sh
 # or
-chmod +x install_wordpress.sh && ./install_wordpress.sh
+chmod +x install-wordpress.sh && ./install-wordpress.sh
 ```
 
 ---
@@ -79,9 +79,9 @@ Proceed with the WordPress setup through the web browser.
 To remove the WordPress installation and its related components:
 
 ```bash
-bash remove_wordpress.sh
+bash remove-wordpress.sh
 # or
-chmod +x remove_wordpress.sh && ./remove_wordpress.sh
+chmod +x remove-wordpress.sh && ./remove-wordpress.sh
 ```
 
 The removal script will:
